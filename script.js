@@ -9,7 +9,7 @@ const saveInput = document.getElementById("saveInput");
 
 const output = document.getElementById("output");
 
-// toggle modes
+// toggle mode
 advanced.addEventListener("change", () => {
     if (advanced.checked) {
         normalMode.style.display = "none";
@@ -21,31 +21,25 @@ advanced.addEventListener("change", () => {
 });
 
 function generate() {
-    let count = parseInt(amount.value);
-
-    if (!count || count < 1) count = 1;
-    if (count > 100) count = 100;
-
-    let result = "";
+    let count = Math.min(100, Math.max(1, parseInt(amount.value) || 1));
+    let result = [];
 
     if (!advanced.checked) {
-        // NORMAL MODE
+
         let id = parseInt(blockId.value);
 
         if (isNaN(id) || id < 1 || id > 19) {
-            output.value = "Block ID must be between 1 and 19";
+            output.value = "Block ID must be 1–19";
             return;
         }
 
         for (let i = 0; i < count; i++) {
-            let offset = i === 0 ? 0 : -i;
-            result += `${id},0,${offset},0,0,???`;
-
-            if (i !== count - 1) result += ";";
+            let yOffset = i * -1;
+            result.push(`${id},0,${yOffset},0,0,???`);
         }
 
     } else {
-        // ADVANCED MODE
+
         let input = saveInput.value.trim();
 
         if (!input) {
@@ -53,30 +47,29 @@ function generate() {
             return;
         }
 
-        let parts = input.split(";");
+        let blocks = input.split(";").map(b => b.trim()).filter(Boolean);
 
         for (let i = 0; i < count; i++) {
-            let offset = i === 0 ? 0 : -i;
+            let yOffset = i * -1;
 
-            let cloned = parts.map(p => {
-                let seg = p.split(",");
+            let clone = blocks.map(block => {
+                let parts = block.split(",");
 
-                // adjust Y position (index 2)
-                if (seg.length >= 3) {
-                    let y = parseFloat(seg[2]);
-                    if (!isNaN(y)) seg[2] = (y + offset).toString();
+                if (parts.length >= 3) {
+                    let y = parseFloat(parts[2]);
+                    if (!isNaN(y)) {
+                        parts[2] = (y + yOffset);
+                    }
                 }
 
-                return seg.join(",");
-            }).join(";");
+                return parts.join(",");
+            });
 
-            result += cloned;
-
-            if (i !== count - 1) result += ";";
+            result.push(clone.join(";"));
         }
     }
 
-    output.value = result;
+    output.value = result.join(";");
 }
 
 function copyOutput() {
