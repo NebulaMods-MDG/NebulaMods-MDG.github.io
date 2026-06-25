@@ -172,7 +172,7 @@
                 .filter(char => char.charCodeAt(0) <= 127)
                 .join("");
 
-            text(value, aligned.checked, auto.checked ? 100 : 0);
+            text(value, false, auto.checked ? 100 : 0);
 
             getString();
         }
