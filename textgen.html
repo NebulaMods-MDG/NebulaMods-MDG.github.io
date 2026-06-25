@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CM2 Text Generator</title>
+
+    <script src="text.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #10131a;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Top Bar */
+        .update-bar {
+            width: 100%;
+            background: #1d2533;
+            padding: 12px;
+            text-align: center;
+            font-size: 15px;
+            border-bottom: 2px solid #2f3d52;
+        }
+
+        /* Main Content */
+        .container {
+            margin-top: 60px;
+            width: 90%;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 50px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 12px rgba(0,150,255,.5);
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            resize: vertical;
+            padding: 15px;
+            font-size: 16px;
+            background: #1d2533;
+            color: white;
+            border: 2px solid #2f3d52;
+            border-radius: 10px;
+            outline: none;
+            margin-bottom: 20px;
+        }
+
+        textarea:focus {
+            border-color: #2b7cff;
+        }
+
+        .options {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        label {
+            font-size: 17px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 8px;
+            transform: scale(1.2);
+        }
+
+        button {
+            background: #2b7cff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 16px 40px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: .25s;
+        }
+
+        button:hover {
+            background: #5297ff;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(.98);
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #66aaff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+
+        #copyfail {
+            margin-top: 20px;
+            color: #ff6666;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="update-bar">
+        Last Updated: June 25, 2026
+    </div>
+
+    <div class="container">
+
+        <a class="back" href="tools.html">← Back</a>
+
+        <h1>CM2 Text Generator</h1>
+
+        <textarea id="input" placeholder="Enter your text here..."></textarea>
+
+        <div class="options">
+            <label>
+                <input type="checkbox" id="aligned">
+                Aligned to Grid
+            </label>
+
+            <label>
+                <input type="checkbox" id="auto" checked>
+                Auto New Line
+            </label>
+        </div>
+
+        <button onclick="copyString()">
+            Copy CM2 String
+        </button>
+
+        <div id="copyfail"></div>
+
+    </div>
+
+    <script src="cm2.js"></script>
+
+    <script>
+        const aligned = document.getElementById("aligned");
+        const auto = document.getElementById("auto");
+        const input = document.getElementById("input");
+
+        function copyString() {
+
+            clear();
+
+            let value = input.value
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/ł/g, "l")
+                .replace(/Ł/g, "L")
+                .split("")
+                .filter(char => char.charCodeAt(0) <= 127)
+                .join("");
+
+            text(value, aligned.checked, auto.checked ? 100 : 0);
+
+            getString();
+        }
+    </script>
+
+</body>
+</html>
