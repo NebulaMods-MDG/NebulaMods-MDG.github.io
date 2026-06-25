@@ -7,8 +7,6 @@ const blockId = document.getElementById("blockId");
 const amount = document.getElementById("amount");
 const saveInput = document.getElementById("saveInput");
 
-const output = document.getElementById("output");
-
 // toggle mode
 advanced.addEventListener("change", () => {
     if (advanced.checked) {
@@ -16,11 +14,13 @@ advanced.addEventListener("change", () => {
         advancedMode.style.display = "block";
     } else {
         normalMode.style.display = "block";
+        advancedMode.style.display = "block";
         advancedMode.style.display = "none";
     }
 });
 
-function generate() {
+function generateAndCopy() {
+
     let count = Math.min(100, Math.max(1, parseInt(amount.value) || 1));
     let result = [];
 
@@ -29,14 +29,14 @@ function generate() {
         let id = parseInt(blockId.value);
 
         if (isNaN(id) || id < 1 || id > 19) {
-            output.value = "Block ID must be 1–19";
+            alert("Block ID must be 1–19");
             return;
         }
 
         for (let i = 0; i < count; i++) {
             let yOffset = i * -1;
             let isLast = i === count - 1;
-result.push(`${id},0,${yOffset},0,0,${isLast ? "???" : ""}`);
+            result.push(`${id},0,${yOffset},0,0,${isLast ? "???" : ""}`);
         }
 
     } else {
@@ -44,7 +44,7 @@ result.push(`${id},0,${yOffset},0,0,${isLast ? "???" : ""}`);
         let input = saveInput.value.trim();
 
         if (!input) {
-            output.value = "Paste a save string first";
+            alert("Paste a save string first");
             return;
         }
 
@@ -70,10 +70,14 @@ result.push(`${id},0,${yOffset},0,0,${isLast ? "???" : ""}`);
         }
     }
 
-    output.value = result.join(";");
-}
+    // COPY DIRECTLY (no textbox)
+    let finalString = result.join(";");
 
-function copyOutput() {
-    output.select();
-    document.execCommand("copy");
+    navigator.clipboard.writeText(finalString)
+        .then(() => {
+            alert("Copied CM2 string!");
+        })
+        .catch(() => {
+            alert("Failed to copy!");
+        });
 }
