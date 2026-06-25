@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CM2 Block Generator</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: #10131a;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bar {
+            width: 100%;
+            background: #1d2533;
+            padding: 12px;
+            text-align: center;
+            border-bottom: 2px solid #2f3d52;
+        }
+
+        .container {
+            margin-top: 60px;
+            width: 90%;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 2px solid #2f3d52;
+            background: #1d2533;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        button {
+            background: #2b7cff;
+            border: none;
+            padding: 14px 30px;
+            font-size: 18px;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #5297ff;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .row input {
+            flex: 1;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        #output {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="bar">
+    CM2 Block Generator
+</div>
+
+<div class="container">
+
+    <label>
+        <input type="checkbox" id="advanced">
+        Advanced Mode
+    </label>
+
+    <div id="normalMode">
+        <input id="blockId" placeholder="Block ID (1-19)">
+    </div>
+
+    <div id="advancedMode" style="display:none;">
+        <textarea id="saveInput" placeholder="Paste save string here..."></textarea>
+    </div>
+
+    <input id="amount" type="number" placeholder="Amount (max 100)" max="100">
+
+    <button onclick="generate()">Generate</button>
+    <button onclick="copyOutput()">Copy</button>
+
+    <textarea id="output" placeholder="Output will appear here"></textarea>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
