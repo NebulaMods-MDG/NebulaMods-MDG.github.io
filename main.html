@@ -1,1 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CM2 Tools</title>
 
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #10131a;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Top Bar */
+        .update-bar {
+            width: 100%;
+            background: #1d2533;
+            padding: 12px;
+            text-align: center;
+            font-size: 15px;
+            border-bottom: 2px solid #2f3d52;
+        }
+
+        /* Main Content */
+        .container {
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 56px;
+            margin-bottom: 40px;
+            text-shadow: 0 0 12px rgba(0,150,255,0.5);
+        }
+
+        .open-btn {
+            background: #2b7cff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 16px 50px;
+            font-size: 22px;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .open-btn:hover {
+            background: #5297ff;
+            transform: scale(1.05);
+        }
+
+        .open-btn:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="update-bar">
+        Last Updated: June 25, 2026
+    </div>
+
+    <div class="container">
+        <h1>CM2 Tools</h1>
+
+        <button class="open-btn" onclick="window.location.href='tools.html'">
+            Open
+        </button>
+    </div>
+
+</body>
+</html>
