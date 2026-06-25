@@ -35,7 +35,8 @@ function generate() {
 
         for (let i = 0; i < count; i++) {
             let yOffset = i * -1;
-            result.push(`${id},0,${yOffset},0,0,???`);
+            let isLast = i === count - 1;
+result.push(`${id},0,${yOffset},0,0,${isLast ? "???" : ""}`);
         }
 
     } else {
