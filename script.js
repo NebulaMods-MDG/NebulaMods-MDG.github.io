@@ -21,7 +21,12 @@ advanced.addEventListener("change", () => {
 
 function generateAndCopy() {
 
-    let count = Math.min(1000, Math.max(1, parseInt(amount.value) || 1));
+    let count = parseInt(amount.value);
+
+    if (isNaN(count)) count = 1;
+
+    count = Math.max(1, Math.min(1000, count));
+
     let result = [];
 
     if (!advanced.checked) {
