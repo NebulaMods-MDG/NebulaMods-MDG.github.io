@@ -76,7 +76,7 @@ function generateAndCopy() {
     }
 
     // COPY DIRECTLY (no textbox)
-    let finalString = result.join(",;");
+    let finalString = result.join(";");
 
     navigator.clipboard.writeText(finalString)
         .then(() => {
