@@ -21,7 +21,7 @@ advanced.addEventListener("change", () => {
 
 function generateAndCopy() {
 
-    let count = Math.min(100, Math.max(1, parseInt(amount.value) || 1));
+    let count = Math.min(1000, Math.max(1, parseInt(amount.value) || 1));
     let result = [];
 
     if (!advanced.checked) {
