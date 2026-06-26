@@ -32,6 +32,26 @@
             border-bottom: 2px solid #2f3d52;
         }
 
+        /* Back Button */
+        .back-btn {
+            position: absolute;
+            top: 70px;
+            left: 20px;
+            background: #2b7cff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .back-btn:hover {
+            background: #5297ff;
+            transform: scale(1.05);
+        }
+
         /* Main Content */
         .container {
             margin-top: 80px;
@@ -73,11 +93,17 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="update-bar">
         Last Updated: June 25, 2026
     </div>
+
+    <!-- BACK BUTTON -->
+    <button class="back-btn" onclick="window.location.href='index.html'">
+        ← Back
+    </button>
 
     <div class="container">
         <h1>Tools</h1>
@@ -92,5 +118,6 @@
             </button>
         </div>
     </div>
+
 </body>
 </html>
