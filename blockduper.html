@@ -91,36 +91,51 @@
 </head>
 
 <body>
-<div class="update-bar">
+
+    <div class="update-bar">
         Last Updated: June 26, 2026
     </div>
-<div class="bar">
-    CM2 Block Generator
-</div>
 
-<div class="container">
-    <a class="back" href="tools.html">← Back</a>
-    <label>
-        <input type="checkbox" id="advanced">
-        Advanced Mode
-    </label>
+    <div class="container">
 
-    <div id="normalMode">
-        <input id="blockId" placeholder="Block ID (1-19)" max ="19">
+        <a class="back" href="tools.html">← Back</a>
+
+        <h1>CM2 Block Duplicator</h1>
+
+        <label>
+            <input type="checkbox" id="advanced">
+            Advanced Mode
+        </label>
+
+        <div id="normalMode">
+            <input
+                id="blockId"
+                type="number"
+                placeholder="Block ID (1-19)"
+                min="1"
+                max="19">
+        </div>
+
+        <div id="advancedMode" style="display:none;">
+            <textarea
+                id="saveInput"
+                placeholder="Paste save string here..."></textarea>
+        </div>
+
+        <input
+            id="amount"
+            type="number"
+            placeholder="Amount (max 1000)"
+            min="1"
+            max="1000">
+
+        <button onclick="generateAndCopy()">
+            Copy CM2 String
+        </button>
+
     </div>
 
-    <div id="advancedMode" style="display:none;">
-        <textarea id="saveInput" placeholder="Paste save string here..."></textarea>
-    </div>
-
-    <input id="amount" type="number" placeholder="Amount (max 1000)" max="1000">
-
-    <button onclick="generateAndCopy()">
-    Copy CM2 String
-</button>
-</div>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 
 </body>
 </html>
