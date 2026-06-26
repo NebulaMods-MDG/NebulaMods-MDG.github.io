@@ -150,21 +150,21 @@
 
         function copyString() {
 
-            clear();
+    clear();
 
-            let value = input.value
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-                .replace(/ł/g, "l")
-                .replace(/Ł/g, "L")
-                .split("")
-                .filter(char => char.charCodeAt(0) <= 127)
-                .join("");
+    let value = input.value
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/ł/g, "l")
+        .replace(/Ł/g, "L")
+        .split("")
+        .filter(char => char.charCodeAt(0) <= 127)
+        .join("");
 
-            text(value, false, auto.checked ? 100 : 0);
+    text(value, false, 100);
 
-            getString();
-        }
+    getString();
+}
     </script>
 
 </body>
