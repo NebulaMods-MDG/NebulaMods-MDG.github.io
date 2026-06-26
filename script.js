@@ -14,7 +14,6 @@ advanced.addEventListener("change", () => {
         advancedMode.style.display = "block";
     } else {
         normalMode.style.display = "block";
-        advancedMode.style.display = "block";
         advancedMode.style.display = "none";
     }
 });
@@ -53,7 +52,10 @@ function generateAndCopy() {
             return;
         }
 
-        let blocks = input.split(";").map(b => b.trim()).filter(Boolean);
+        let blocks = input
+            .split(";")
+            .map(b => b.replace("???", "").trim())
+            .filter(Boolean);
 
         for (let i = 0; i < count; i++) {
             let yOffset = i * -1;
@@ -75,8 +77,19 @@ function generateAndCopy() {
         }
     }
 
-    // COPY DIRECTLY (no textbox)
     let finalString = result.join(";");
+
+    let lastSemicolon = finalString.lastIndexOf(";");
+
+    if (lastSemicolon !== -1) {
+        finalString =
+            finalString.substring(0, lastSemicolon) +
+            ";" +
+            finalString.substring(lastSemicolon + 1) +
+            "???";
+    } else {
+        finalString += "???";
+    }
 
     navigator.clipboard.writeText(finalString)
         .then(() => {
