@@ -104,20 +104,18 @@
     </label>
 
     <div id="normalMode">
-        <input id="blockId" placeholder="Block ID (1-19)">
+        <input id="blockId" placeholder="Block ID (1-19)" max ="19">
     </div>
 
     <div id="advancedMode" style="display:none;">
         <textarea id="saveInput" placeholder="Paste save string here..."></textarea>
     </div>
 
-    <input id="amount" type="number" placeholder="Amount (max 100)" max="100">
+    <input id="amount" type="number" placeholder="Amount (max 1000)" max="1000">
 
     <button onclick="generateAndCopy()">
     Copy CM2 String
 </button>
-
-    <textarea id="output" placeholder="Output will appear here"></textarea>
 
 </div>
 
