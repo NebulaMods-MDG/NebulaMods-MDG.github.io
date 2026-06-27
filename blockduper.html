@@ -32,29 +32,9 @@
             border-bottom: 2px solid #2f3d52;
         }
 
-        /* Back Button */
-        .back-btn {
-            position: absolute;
-            top: 70px;
-            left: 20px;
-            background: #2b7cff;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 18px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.25s;
-        }
-
-        .back-btn:hover {
-            background: #5297ff;
-            transform: scale(1.05);
-        }
-
         /* Main Content */
         .container {
-            margin-top: 80px;
+            margin-top: 60px;
             width: 90%;
             max-width: 700px;
             text-align: center;
@@ -64,6 +44,18 @@
             font-size: 50px;
             margin-bottom: 30px;
             text-shadow: 0 0 12px rgba(0,150,255,.5);
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #66aaff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .back:hover {
+            text-decoration: underline;
         }
 
         input,
@@ -121,6 +113,7 @@
         button:active {
             transform: scale(.98);
         }
+
     </style>
 </head>
 
@@ -130,11 +123,9 @@
         Last Updated: June 26, 2026
     </div>
 
-    <button class="back-btn" onclick="window.location.href='tools.html'">
-        ← Back
-    </button>
-
     <div class="container">
+
+        <a class="back" href="tools.html">← Back</a>
 
         <h1>CM2 Block Duplicator</h1>
 
