@@ -73,11 +73,14 @@ function copy(text)
 
 function generateCube()
 {
+    const length = parseInt(widthInput.value) || 1;
+const width = parseInt(heightInput.value) || 1;
+const height = parseInt(depthInput.value) || 1;
 
     const { width, height, depth } = getDimensions();
 
     // total copies
-    const copies = width * height * depth;
+    const copies = length * width * height;
 
     // ==========================
     // NORMAL MODE
