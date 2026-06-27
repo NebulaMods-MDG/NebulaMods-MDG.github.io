@@ -3,9 +3,9 @@ const advanced = document.getElementById("advanced");
 const blockIdContainer = document.getElementById("blockIdContainer");
 const saveStringContainer = document.getElementById("saveStringContainer");
 
-const widthInput = document.getElementById("width");
-const heightInput = document.getElementById("height");
-const depthInput = document.getElementById("depth");
+const lengthInput = document.getElementById("width");
+const widthInput  = document.getElementById("height");
+const heightInput = document.getElementById("depth");
 
 const blockIdInput = document.getElementById("blockId");
 const saveStringInput = document.getElementById("saveString");
