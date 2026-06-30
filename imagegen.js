@@ -106,28 +106,28 @@ function generateImage()
     const result = [];
 
     for (let y = 0; y < height; y++)
+{
+    for (let x = 0; x < width; x++)
     {
-        for (let x = 0; x < width; x++)
-        {
-            const index = (y * width + x) * 4;
+        const index = (y * width + x) * 4;
 
-            const r = pixels[index];
-            const g = pixels[index + 1];
-            const b = pixels[index + 2];
-            const a = pixels[index + 3];
+        const r = pixels[index];
+        const g = pixels[index + 1];
+        const b = pixels[index + 2];
+        const a = pixels[index + 3];
 
-            if (a < 10) continue;
+        if (a < 10) continue;
 
-            // ✅ FIXED ORIENTATION (minimal changes only)
-            const cm2Y = x;
-            const cm2X = -y;
-            const cm2Z = y;
+        // ✅ PURE GRID MAPPING (NO ROTATION LOGIC)
+        const cm2X = x;
+        const cm2Y = 1;
+        const cm2Z = y;
 
-            result.push(
-                `14,0,${cm2Y},${cm2X},${cm2Z},${r}+${g}+${b}+1+0`
-            );
-        }
+        result.push(
+            `14,0,${cm2Y},${cm2X},${cm2Z},${r}+${g}+${b}+1+0`
+        );
     }
+}
 
     if (result.length === 0)
     {
