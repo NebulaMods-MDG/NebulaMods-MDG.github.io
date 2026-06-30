@@ -3,8 +3,6 @@ const imageInput = document.getElementById("imageInput");
 const widthInput = document.getElementById("width");
 const heightInput = document.getElementById("height");
 
-const blockIdInput = document.getElementById("blockId");
-
 const preview = document.getElementById("preview");
 const ctx = preview.getContext("2d");
 
@@ -13,41 +11,37 @@ const MAX_BLOCKS = 150000;
 
 let loadedImage = null;
 
-function clamp(value,min,max)
+function clamp(value, min, max)
 {
-    return Math.max(min,Math.min(max,value));
+    return Math.max(min, Math.min(max, value));
 }
 
 function copy(text)
 {
     navigator.clipboard.writeText(text)
-    .then(() =>
-    {
-        alert("Copied CM2 String!");
-    })
-    .catch(() =>
-    {
-        alert("Failed to copy.");
-    });
+        .then(() => {
+            alert("Copied CM2 String!");
+        })
+        .catch(() => {
+            alert("Failed to copy.");
+        });
 }
-imageInput.addEventListener("change",e =>
-{
 
+imageInput.addEventListener("change", e =>
+{
     const file = e.target.files[0];
 
-    if(!file)
+    if (!file)
         return;
 
     const reader = new FileReader();
 
     reader.onload = function(event)
     {
-
         loadedImage = new Image();
 
         loadedImage.onload = function()
         {
-
             preview.width =
                 loadedImage.width;
 
@@ -71,21 +65,18 @@ imageInput.addEventListener("change",e =>
                     loadedImage.height,
                     MAX_SIZE
                 );
-
         };
 
         loadedImage.src =
             event.target.result;
-
     };
 
     reader.readAsDataURL(file);
-
 });
+
 function generateImage()
 {
-
-    if(!loadedImage)
+    if (!loadedImage)
     {
         alert(
             "Upload an image first."
@@ -100,38 +91,32 @@ function generateImage()
     let height =
         parseInt(heightInput.value);
 
-    let blockId =
-        parseInt(blockIdInput.value);
-
-    if(isNaN(blockId))
-    {
-        alert(
-            "Block ID must be 1-19."
-        );
-
-        return;
-    }
-
-    if(blockId < 1 || blockId > 19)
-    {
-        alert(
-            "Block ID must be 1-19."
-        );
-
-        return;
-    }
-
     width =
-        clamp(width,1,MAX_SIZE);
+        clamp(
+            width,
+            1,
+            MAX_SIZE
+        );
 
     height =
-        clamp(height,1,MAX_SIZE);
+        clamp(
+            height,
+            1,
+            MAX_SIZE
+        );
 
     preview.width =
         width;
 
     preview.height =
         height;
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
 
     ctx.drawImage(
         loadedImage,
@@ -150,54 +135,67 @@ function generateImage()
         ).data;
 
     const result = [];
-  for (let y = 0; y < height; y++)
-{
-    for (let x = 0; x < width; x++)
+
+    for (let y = 0; y < height; y++)
     {
+        for (let x = 0; x < width; x++)
+        {
+            const index =
+                (y * width + x) * 4;
 
-        const index =
-            (y * width + x) * 4;
+            const r =
+                pixels[index];
 
-        const r = pixels[index];
-        const g = pixels[index + 1];
-        const b = pixels[index + 2];
-        const a = pixels[index + 3];
+            const g =
+                pixels[index + 1];
 
-        // Ignore transparent pixels
-        if (a < 10)
-            continue;
+            const b =
+                pixels[index + 2];
 
-        // CM2 coordinates
+            const a =
+                pixels[index + 3];
 
-        const cm2Y = -y;
-        const cm2X = x;
-        const cm2Z = 0;
+            // ignore transparent pixels
 
-        result.push(
-            `${blockId},0,${cm2Y},${cm2X},${cm2Z},`
+            if (a < 10)
+                continue;
+
+            const cm2Y =
+                -y;
+
+            const cm2X =
+                x;
+
+            const cm2Z =
+                0;
+
+            result.push(
+                `14,0,${cm2Y},${cm2X},${cm2Z},${r}+${g}+${b}+1+0`
+            );
+        }
+    }
+
+    if (result.length === 0)
+    {
+        alert(
+            "Image contains no visible pixels."
         );
 
+        return;
     }
-}
-  if (result.length === 0)
-{
-    alert("Image contains no visible pixels.");
-    return;
-}
 
-if (result.length > MAX_BLOCKS)
-{
-    alert(
-        `Image contains ${result.length.toLocaleString()} blocks.\n\nMaximum is ${MAX_BLOCKS.toLocaleString()}.`
+    if (result.length > MAX_BLOCKS)
+    {
+        alert(
+            `Image contains ${result.length.toLocaleString()} blocks.\n\nMaximum is ${MAX_BLOCKS.toLocaleString()}.`
+        );
+
+        return;
+    }
+
+    result[result.length - 1] += "???";
+
+    copy(
+        result.join(";")
     );
-
-    return;
-}
-
-result[result.length - 1] += "???";
-
-copy(
-    result.join(";")
-);
-
 }
