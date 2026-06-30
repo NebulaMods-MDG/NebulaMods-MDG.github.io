@@ -126,30 +126,32 @@ function generateImage()
 
     const result = [];
 
-    for (let y = 0; y < height; y++)
+    const centerX = Math.floor(width / 2);
+const centerZ = Math.floor(height / 2);
+
+for (let y = 0; y < height; y++)
+{
+    for (let x = 0; x < width; x++)
     {
-        for (let x = 0; x < width; x++)
-        {
-            const index =
-                (y * width + x) * 4;
+        const index = (y * width + x) * 4;
 
-            const r = pixels[index];
-            const g = pixels[index + 1];
-            const b = pixels[index + 2];
-            const a = pixels[index + 3];
+        const r = pixels[index];
+        const g = pixels[index + 1];
+        const b = pixels[index + 2];
+        const a = pixels[index + 3];
 
-            if (a < 10)
-                continue;
+        if (a < 10) continue;
 
-            const cm2X = x;
-const cm2Y = 0;
-const cm2Z = y;
+        // 🔥 PROPER CM2 PLANE (NO MIRROR HACKS)
+        const cm2X = x - centerX;
+        const cm2Y = 1;
+        const cm2Z = y - centerZ;
 
-            result.push(
-    `14,0,${cm2Y},${cm2X},${cm2Z},${r}+${g}+${b}+1+0`
-);
-        }
+        result.push(
+            `14,0,${cm2Y},${cm2X},${cm2Z},${r}+${g}+${b}+1+0`
+        );
     }
+}
 
     if (result.length === 0)
     {
