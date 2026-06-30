@@ -118,7 +118,6 @@ function generateImage()
 
         if (a < 10) continue;
 
-        // ✅ PURE GRID MAPPING (NO ROTATION LOGIC)
         const cm2X = x;
         const cm2Y = 1;
         const cm2Z = y;
@@ -128,7 +127,6 @@ function generateImage()
         );
     }
 }
-
     if (result.length === 0)
     {
         alert("Image contains no visible pixels.");
