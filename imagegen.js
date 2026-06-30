@@ -116,10 +116,9 @@ function generateImage()
 
             if (a < 10) continue;
 
-            // ✅ FIXED CM2 COORDINATES
             const cm2X = x;
-            const cm2Y = 1;         // lifted so it doesn't go into ground
-            const cm2Z = y;         // FIXED: removed negative flip
+const cm2Y = 1;
+const cm2Z = -y;
 
             result.push(
                 `14,0,${cm2Y},${cm2X},${cm2Z},${r}+${g}+${b}+1+0`
