@@ -142,7 +142,7 @@ function generateImage()
                 continue;
 
             // orientation fix
-            const cm2Y = x;
+            const cm2Y = 72;
             const cm2X = -y;
 
             result.push(
