@@ -1,5 +1,4 @@
 const imageInput = document.getElementById("imageInput");
-
 const preview = document.getElementById("preview");
 const ctx = preview.getContext("2d");
 
@@ -7,6 +6,16 @@ const MAX_SIZE = 100;
 const MAX_BLOCKS = 150000;
 
 let loadedImage = null;
+
+/*
+    ===== CM2 TRANSFORM SETTINGS =====
+    If orientation is wrong, ONLY change these 2 values.
+*/
+
+const FLIP_X = false;
+const FLIP_Y = true;   // fixes most upside-down issues
+const SWAP_AXES = false; // only true if image is rotated 90°
+const HEIGHT_OFFSET = 1;
 
 function copy(text)
 {
@@ -28,36 +37,19 @@ imageInput.addEventListener("change", e =>
 
         loadedImage.onload = function()
         {
-            let width = loadedImage.width;
-            let height = loadedImage.height;
+            let w = loadedImage.width;
+            let h = loadedImage.height;
 
-            // scale down if needed
-            if (width > MAX_SIZE)
-            {
-                const scale = MAX_SIZE / width;
-                width = MAX_SIZE;
-                height = Math.round(height * scale);
-            }
+            const scale = Math.min(MAX_SIZE / w, MAX_SIZE / h);
 
-            if (height > MAX_SIZE)
-            {
-                const scale = MAX_SIZE / height;
-                height = MAX_SIZE;
-                width = Math.round(width * scale);
-            }
+            w = Math.round(w * scale);
+            h = Math.round(h * scale);
 
-            preview.width = width;
-            preview.height = height;
+            preview.width = w;
+            preview.height = h;
 
-            ctx.clearRect(0, 0, width, height);
-
-            ctx.drawImage(
-                loadedImage,
-                0,
-                0,
-                width,
-                height
-            );
+            ctx.clearRect(0, 0, w, h);
+            ctx.drawImage(loadedImage, 0, 0, w, h);
         };
 
         loadedImage.src = event.target.result;
@@ -74,54 +66,46 @@ function generateImage()
         return;
     }
 
-    let width = loadedImage.width;
-    let height = loadedImage.height;
+    let w = preview.width;
+    let h = preview.height;
 
-    // resize again for safety
-    if (width > MAX_SIZE)
-    {
-        const scale = MAX_SIZE / width;
-        width = MAX_SIZE;
-        height = Math.round(height * scale);
-    }
-
-    if (height > MAX_SIZE)
-    {
-        const scale = MAX_SIZE / height;
-        height = MAX_SIZE;
-        width = Math.round(width * scale);
-    }
-
-    preview.width = width;
-    preview.height = height;
-
-    ctx.clearRect(0, 0, width, height);
-
-    ctx.drawImage(loadedImage, 0, 0, width, height);
-
-    const pixels = ctx.getImageData(0, 0, width, height).data;
+    const pixels = ctx.getImageData(0, 0, w, h).data;
 
     const result = [];
 
-    for (let y = 0; y < height; y++)
+    for (let y = 0; y < h; y++)
     {
-        for (let x = 0; x < width; x++)
+        for (let x = 0; x < w; x++)
         {
-            const index = (y * width + x) * 4;
+            const i = (y * w + x) * 4;
 
-            const r = pixels[index];
-            const g = pixels[index + 1];
-            const b = pixels[index + 2];
-            const a = pixels[index + 3];
+            const r = pixels[i];
+            const g = pixels[i + 1];
+            const b = pixels[i + 2];
+            const a = pixels[i + 3];
 
             if (a < 10) continue;
 
-            const cm2X = x;
-const cm2Y = 1;
-const cm2Z = height - 1 - y;
+            // ===== BASE COORDS =====
+            let cx = x;
+            let cz = y;
+
+            // Flip controls (fixes mirroring)
+            if (FLIP_X) cx = (w - 1) - cx;
+            if (FLIP_Y) cz = (h - 1) - cz;
+
+            // Axis swap (fix 90° rotation cases)
+            if (SWAP_AXES)
+            {
+                const t = cx;
+                cx = cz;
+                cz = t;
+            }
+
+            const cy = HEIGHT_OFFSET;
 
             result.push(
-                `14,0,${cm2Y},${cm2X},${cm2Z},${r}+${g}+${b}+1+0`
+                `14,0,${cy},${cx},${cz},${r}+${g}+${b}+1+0`
             );
         }
     }
@@ -141,7 +125,6 @@ const cm2Z = height - 1 - y;
         return;
     }
 
-    // keep your CM2 format ending marker
     result[result.length - 1] += "???";
 
     copy(result.join(";"));
