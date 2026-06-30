@@ -141,13 +141,13 @@ function generateImage()
             if (a < 10)
                 continue;
 
-            // orientation fix
-            const cm2Y = x;
-            const cm2X = -y;
+            const cm2Y = 0;
+const cm2X = x;
+const cm2Z = -y;
 
-            result.push(
-                `14,0,${cm2Y},${cm2X},0,${r}+${g}+${b}+1+0`
-            );
+result.push(
+`14,0,${cm2Y},${cm2X},${cm2Z},${r}+${g}+${b}+1+0`
+);
         }
     }
 
