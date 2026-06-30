@@ -56,7 +56,7 @@ imageInput.addEventListener("change", e =>
             preview.width = width;
             preview.height = height;
 
-            ctx.clearRect(0,0,width,height);
+            ctx.clearRect(0, 0, width, height);
 
             ctx.drawImage(
                 loadedImage,
@@ -130,7 +130,6 @@ function generateImage()
     {
         for (let x = 0; x < width; x++)
         {
-
             const index =
                 (y * width + x) * 4;
 
@@ -149,11 +148,9 @@ function generateImage()
             if (a < 10)
                 continue;
 
-            const cm2Y = -y;
-
-            // FIXED MIRROR
-            const cm2X =
-                width - 1 - x;
+            // ROTATION FIX
+            const cm2Y = -x;
+            const cm2X = y;
 
             result.push(
 
