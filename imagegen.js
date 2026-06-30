@@ -1,8 +1,5 @@
 const imageInput = document.getElementById("imageInput");
 
-const widthInput = document.getElementById("width");
-const heightInput = document.getElementById("height");
-
 const preview = document.getElementById("preview");
 const ctx = preview.getContext("2d");
 
@@ -11,20 +8,15 @@ const MAX_BLOCKS = 150000;
 
 let loadedImage = null;
 
-function clamp(value, min, max)
-{
-    return Math.max(min, Math.min(max, value));
-}
-
 function copy(text)
 {
     navigator.clipboard.writeText(text)
-        .then(() => {
-            alert("Copied CM2 String!");
-        })
-        .catch(() => {
-            alert("Failed to copy.");
-        });
+    .then(() => {
+        alert("Copied CM2 String!");
+    })
+    .catch(() => {
+        alert("Failed to copy.");
+    });
 }
 
 imageInput.addEventListener("change", e =>
@@ -42,81 +34,79 @@ imageInput.addEventListener("change", e =>
 
         loadedImage.onload = function()
         {
-            preview.width =
-                loadedImage.width;
+            let width = loadedImage.width;
+            let height = loadedImage.height;
 
-            preview.height =
-                loadedImage.height;
+            if (width > MAX_SIZE)
+            {
+                const scale = MAX_SIZE / width;
+
+                width = MAX_SIZE;
+                height = Math.round(height * scale);
+            }
+
+            if (height > MAX_SIZE)
+            {
+                const scale = MAX_SIZE / height;
+
+                height = MAX_SIZE;
+                width = Math.round(width * scale);
+            }
+
+            preview.width = width;
+            preview.height = height;
+
+            ctx.clearRect(0,0,width,height);
 
             ctx.drawImage(
                 loadedImage,
                 0,
-                0
+                0,
+                width,
+                height
             );
-
-            widthInput.value =
-                Math.min(
-                    loadedImage.width,
-                    MAX_SIZE
-                );
-
-            heightInput.value =
-                Math.min(
-                    loadedImage.height,
-                    MAX_SIZE
-                );
         };
 
         loadedImage.src =
             event.target.result;
+
     };
 
     reader.readAsDataURL(file);
+
 });
 
 function generateImage()
 {
     if (!loadedImage)
     {
-        alert(
-            "Upload an image first."
-        );
-
+        alert("Upload an image first.");
         return;
     }
 
-    let width =
-        parseInt(widthInput.value);
+    let width = loadedImage.width;
+    let height = loadedImage.height;
 
-    let height =
-        parseInt(heightInput.value);
+    if (width > MAX_SIZE)
+    {
+        const scale = MAX_SIZE / width;
 
-    width =
-        clamp(
-            width,
-            1,
-            MAX_SIZE
-        );
+        width = MAX_SIZE;
+        height = Math.round(height * scale);
+    }
 
-    height =
-        clamp(
-            height,
-            1,
-            MAX_SIZE
-        );
+    if (height > MAX_SIZE)
+    {
+        const scale = MAX_SIZE / height;
 
-    preview.width =
-        width;
+        height = MAX_SIZE;
+        width = Math.round(width * scale);
+    }
 
-    preview.height =
-        height;
+    preview.width = width;
+    preview.height = height;
 
-    ctx.clearRect(
-        0,
-        0,
-        width,
-        height
-    );
+    ctx.clearRect(0,0,width,height);
 
     ctx.drawImage(
         loadedImage,
@@ -140,6 +130,7 @@ function generateImage()
     {
         for (let x = 0; x < width; x++)
         {
+
             const index =
                 (y * width + x) * 4;
 
@@ -155,23 +146,21 @@ function generateImage()
             const a =
                 pixels[index + 3];
 
-            // ignore transparent pixels
-
             if (a < 10)
                 continue;
 
-            const cm2Y =
-                -y;
+            const cm2Y = -y;
 
+            // FIXED MIRROR
             const cm2X =
-                x;
-
-            const cm2Z =
-                0;
+                width - 1 - x;
 
             result.push(
-                `14,0,${cm2Y},${cm2X},${cm2Z},${r}+${g}+${b}+1+0`
+
+`14,0,${cm2Y},${cm2X},0,${r}+${g}+${b}+1+0`
+
             );
+
         }
     }
 
@@ -187,7 +176,11 @@ function generateImage()
     if (result.length > MAX_BLOCKS)
     {
         alert(
-            `Image contains ${result.length.toLocaleString()} blocks.\n\nMaximum is ${MAX_BLOCKS.toLocaleString()}.`
+
+`Image contains ${result.length.toLocaleString()} blocks.
+
+Maximum is ${MAX_BLOCKS.toLocaleString()}.`
+
         );
 
         return;
@@ -198,4 +191,5 @@ function generateImage()
     copy(
         result.join(";")
     );
+
 }
