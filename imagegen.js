@@ -11,19 +11,20 @@ let loadedImage = null;
 function copy(text)
 {
     navigator.clipboard.writeText(text)
-        .then(() => {
-            alert("Copied CM2 String!");
-        })
-        .catch(() => {
-            alert("Failed to copy.");
-        });
+    .then(() => {
+        alert("Copied CM2 String!");
+    })
+    .catch(() => {
+        alert("Failed to copy.");
+    });
 }
 
 imageInput.addEventListener("change", e =>
 {
     const file = e.target.files[0];
 
-    if (!file) return;
+    if (!file)
+        return;
 
     const reader = new FileReader();
 
@@ -39,6 +40,7 @@ imageInput.addEventListener("change", e =>
             if (width > MAX_SIZE)
             {
                 const scale = MAX_SIZE / width;
+
                 width = MAX_SIZE;
                 height = Math.round(height * scale);
             }
@@ -46,6 +48,7 @@ imageInput.addEventListener("change", e =>
             if (height > MAX_SIZE)
             {
                 const scale = MAX_SIZE / height;
+
                 height = MAX_SIZE;
                 width = Math.round(width * scale);
             }
@@ -64,10 +67,13 @@ imageInput.addEventListener("change", e =>
             );
         };
 
-        loadedImage.src = event.target.result;
+        loadedImage.src =
+            event.target.result;
+
     };
 
     reader.readAsDataURL(file);
+
 });
 
 function generateImage()
@@ -84,6 +90,7 @@ function generateImage()
     if (width > MAX_SIZE)
     {
         const scale = MAX_SIZE / width;
+
         width = MAX_SIZE;
         height = Math.round(height * scale);
     }
@@ -91,6 +98,7 @@ function generateImage()
     if (height > MAX_SIZE)
     {
         const scale = MAX_SIZE / height;
+
         height = MAX_SIZE;
         width = Math.round(width * scale);
     }
@@ -98,50 +106,76 @@ function generateImage()
     preview.width = width;
     preview.height = height;
 
-    ctx.clearRect(0, 0, width, height);
-    ctx.drawImage(loadedImage, 0, 0, width, height);
+    ctx.clearRect(0,0,width,height);
 
-    const pixels = ctx.getImageData(0, 0, width, height).data;
+    ctx.drawImage(
+        loadedImage,
+        0,
+        0,
+        width,
+        height
+    );
+
+    const pixels =
+        ctx.getImageData(
+            0,
+            0,
+            width,
+            height
+        ).data;
 
     const result = [];
 
     for (let y = 0; y < height; y++)
-{
-    for (let x = 0; x < width; x++)
     {
-        const index = (y * width + x) * 4;
+        for (let x = 0; x < width; x++)
+        {
+            const index =
+                (y * width + x) * 4;
 
-        const r = pixels[index];
-        const g = pixels[index + 1];
-        const b = pixels[index + 2];
-        const a = pixels[index + 3];
+            const r = pixels[index];
+            const g = pixels[index + 1];
+            const b = pixels[index + 2];
+            const a = pixels[index + 3];
 
-        if (a < 10) continue;
+            if (a < 10)
+                continue;
 
-        const cm2X = y;
-const cm2Y = 1;
-const cm2Z = x;
-        result.push(
-            `14,0,${cm2Y},${cm2X},${cm2Z},${r}+${g}+${b}+1+0`
-        );
+            // orientation fix
+            const cm2Y = x;
+            const cm2X = -y;
+
+            result.push(
+                `14,0,${cm2Y},${cm2X},0,${r}+${g}+${b}+1+0`
+            );
+        }
     }
-}
+
     if (result.length === 0)
     {
-        alert("Image contains no visible pixels.");
+        alert(
+            "Image contains no visible pixels."
+        );
+
         return;
     }
 
     if (result.length > MAX_BLOCKS)
     {
         alert(
-            `Image contains ${result.length.toLocaleString()} blocks.\n` +
-            `Maximum is ${MAX_BLOCKS.toLocaleString()}.`
+
+`Image contains ${result.length.toLocaleString()} blocks.
+
+Maximum is ${MAX_BLOCKS.toLocaleString()}.`
+
         );
+
         return;
     }
 
     result[result.length - 1] += "???";
 
-    copy(result.join(";"));
+    copy(
+        result.join(";")
+    );
 }
