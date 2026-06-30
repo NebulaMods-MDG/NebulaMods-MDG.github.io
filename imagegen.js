@@ -118,7 +118,7 @@ function generateImage()
 
             const cm2X = x;
 const cm2Y = 1;
-const cm2Z = y;
+const cm2Z = height - 1 - y;
 
             result.push(
                 `14,0,${cm2Y},${cm2X},${cm2Z},${r}+${g}+${b}+1+0`
