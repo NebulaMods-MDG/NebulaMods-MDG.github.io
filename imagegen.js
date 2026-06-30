@@ -133,31 +133,21 @@ function generateImage()
             const index =
                 (y * width + x) * 4;
 
-            const r =
-                pixels[index];
-
-            const g =
-                pixels[index + 1];
-
-            const b =
-                pixels[index + 2];
-
-            const a =
-                pixels[index + 3];
+            const r = pixels[index];
+            const g = pixels[index + 1];
+            const b = pixels[index + 2];
+            const a = pixels[index + 3];
 
             if (a < 10)
                 continue;
 
-            // ROTATION FIX
-            const cm2Y = -x;
-            const cm2X = y;
+            // orientation fix
+            const cm2Y = x;
+            const cm2X = -y;
 
             result.push(
-
-`14,0,${cm2Y},${cm2X},0,${r}+${g}+${b}+1+0`
-
+                `14,0,${cm2Y},${cm2X},0,${r}+${g}+${b}+1+0`
             );
-
         }
     }
 
@@ -188,5 +178,4 @@ Maximum is ${MAX_BLOCKS.toLocaleString()}.`
     copy(
         result.join(";")
     );
-
 }
