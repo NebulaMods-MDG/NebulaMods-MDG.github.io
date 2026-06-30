@@ -9,188 +9,188 @@
 content="width=device-width, initial-scale=1.0">
 
 <title>
+
 CM2 Image Generator
+
 </title>
 
 <style>
 
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,Helvetica,sans-serif;
+
+margin:0;
+padding:0;
+
+box-sizing:border-box;
+
+font-family:
+
+Arial,
+Helvetica,
+sans-serif;
+
 }
 
 body{
 
-    background:#10131a;
+background:#10131a;
 
-    color:white;
+color:white;
 
-    display:flex;
+display:flex;
 
-    flex-direction:column;
+flex-direction:column;
 
-    align-items:center;
+align-items:center;
 
-    min-height:100vh;
+min-height:100vh;
 
 }
 
 .update-bar{
 
-    width:100%;
+width:100%;
 
-    background:#1d2533;
+background:#1d2533;
 
-    padding:12px;
+padding:12px;
 
-    text-align:center;
+text-align:center;
 
-    font-size:15px;
+font-size:15px;
 
-    border-bottom:
-    2px solid #2f3d52;
+border-bottom:
+
+2px solid #2f3d52;
 
 }
 
 .container{
 
-    margin-top:60px;
+margin-top:60px;
 
-    width:90%;
+width:90%;
 
-    max-width:700px;
+max-width:700px;
 
-    text-align:center;
+text-align:center;
 
 }
 
 .back{
 
-    display:inline-block;
+display:inline-block;
 
-    margin-bottom:25px;
+margin-bottom:25px;
 
-    color:#66aaff;
+color:#66aaff;
 
-    text-decoration:none;
+text-decoration:none;
 
-    font-size:18px;
+font-size:18px;
 
 }
 
 .back:hover{
 
-    text-decoration:underline;
+text-decoration:underline;
 
 }
 
 h1{
 
-    font-size:50px;
+font-size:50px;
 
-    margin-bottom:30px;
+margin-bottom:30px;
 
-    text-shadow:
+text-shadow:
 
-    0 0 12px
+0 0 12px
 
-    rgba(0,150,255,.5);
+rgba(
+0,
+150,
+255,
+.5
+);
 
 }
 
 input{
 
-    width:100%;
+width:100%;
 
-    padding:14px;
+padding:14px;
 
-    margin-bottom:18px;
+margin-bottom:18px;
 
-    border-radius:10px;
+border-radius:10px;
 
-    border:
+border:
 
-    2px solid #2f3d52;
+2px solid #2f3d52;
 
-    background:#1d2533;
+background:#1d2533;
 
-    color:white;
+color:white;
 
-    font-size:16px;
+font-size:16px;
 
-    outline:none;
+outline:none;
 
 }
 
 input:focus{
 
-    border-color:#2b7cff;
-
-}
-
-.dimensions{
-
-    display:flex;
-
-    gap:15px;
-
-    justify-content:center;
-
-}
-
-.dimensions input{
-
-    width:100%;
+border-color:#2b7cff;
 
 }
 
 button{
 
-    background:#2b7cff;
+background:#2b7cff;
 
-    color:white;
+color:white;
 
-    border:none;
+border:none;
 
-    border-radius:10px;
+border-radius:10px;
 
-    padding:16px 40px;
+padding:16px 40px;
 
-    font-size:20px;
+font-size:20px;
 
-    cursor:pointer;
+cursor:pointer;
 
-    transition:.25s;
+transition:.25s;
 
 }
 
 button:hover{
 
-    background:#5297ff;
+background:#5297ff;
 
-    transform:scale(1.05);
+transform:scale(1.05);
 
 }
 
 button:active{
 
-    transform:scale(.98);
+transform:scale(.98);
 
 }
 
 canvas{
 
-    margin-top:20px;
+margin-top:20px;
 
-    max-width:100%;
+max-width:100%;
 
-    border:
+border:
 
-    2px solid #2f3d52;
+2px solid #2f3d52;
 
-    border-radius:10px;
+border-radius:10px;
 
 }
 
@@ -231,34 +231,6 @@ id="imageInput"
 
 accept="image/*">
 
-<div class="dimensions">
-
-<input
-
-type="number"
-
-id="width"
-
-placeholder="Width"
-
-min="1"
-
-max="100">
-
-<input
-
-type="number"
-
-id="height"
-
-placeholder="Height"
-
-min="1"
-
-max="100">
-
-</div>
-
 <button
 
 onclick="generateImage()">
@@ -268,7 +240,6 @@ Copy CM2 String
 </button>
 
 <canvas
-
 id="preview">
 
 </canvas>
