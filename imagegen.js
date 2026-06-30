@@ -12,7 +12,7 @@ let loadedImage = null;
     If orientation is wrong, ONLY change these 2 values.
 */
 
-const FLIP_X = false;
+const FLIP_X = true;
 const FLIP_Y = true;   // fixes most upside-down issues
 const SWAP_AXES = true; // only true if image is rotated 90°
 const HEIGHT_OFFSET = 1;
