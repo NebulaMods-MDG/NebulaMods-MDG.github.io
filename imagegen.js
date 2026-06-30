@@ -1,5 +1,4 @@
 const imageInput = document.getElementById("imageInput");
-
 const preview = document.getElementById("preview");
 const ctx = preview.getContext("2d");
 
@@ -31,7 +30,7 @@ imageInput.addEventListener("change", e =>
             let width = loadedImage.width;
             let height = loadedImage.height;
 
-            // uniform scale
+            // scale down proportionally
             const scale = Math.min(MAX_SIZE / width, MAX_SIZE / height);
 
             width = Math.max(1, Math.round(width * scale));
@@ -65,10 +64,6 @@ function generateImage()
 
     const result = [];
 
-    // 🔥 CENTER OFFSETS (THIS IS THE KEY FIX)
-    const offsetX = Math.floor(width / 2);
-    const offsetZ = Math.floor(height / 2);
-
     for (let y = 0; y < height; y++)
     {
         for (let x = 0; x < width; x++)
@@ -82,10 +77,22 @@ function generateImage()
 
             if (a < 10) continue;
 
-            // ✅ CORRECT CM2 WORLD MAPPING
-            const cm2X = x - offsetX;
-            const cm2Y = 1;
-            const cm2Z = y - offsetZ;
+            /*
+                ✅ TRUE CM2 MAPPING (based on your working generator)
+
+                Image:
+                    x = horizontal
+                    y = vertical
+
+                CM2:
+                    X = -y (inverted vertical)
+                    Y = x (horizontal becomes height axis)
+                    Z = 0 (flat plane)
+            */
+
+            const cm2X = -y;
+            const cm2Y = x;
+            const cm2Z = 0;
 
             result.push(
                 `14,0,${cm2Y},${cm2X},${cm2Z},${r}+${g}+${b}+1+0`
@@ -108,7 +115,7 @@ function generateImage()
         return;
     }
 
-    // keep CM2 format marker
+    // CM2 save marker
     result[result.length - 1] += "???";
 
     copy(result.join(";"));
