@@ -1,4 +1,5 @@
 const imageInput = document.getElementById("imageInput");
+
 const preview = document.getElementById("preview");
 const ctx = preview.getContext("2d");
 
@@ -6,16 +7,6 @@ const MAX_SIZE = 100;
 const MAX_BLOCKS = 150000;
 
 let loadedImage = null;
-
-/*
-    ===== CM2 TRANSFORM SETTINGS =====
-    If orientation is wrong, ONLY change these 2 values.
-*/
-
-const FLIP_X = true;
-const FLIP_Y = true;   // fixes most upside-down issues
-const SWAP_AXES = true; // only true if image is rotated 90°
-const HEIGHT_OFFSET = 1;
 
 function copy(text)
 {
@@ -37,19 +28,20 @@ imageInput.addEventListener("change", e =>
 
         loadedImage.onload = function()
         {
-            let w = loadedImage.width;
-            let h = loadedImage.height;
+            let width = loadedImage.width;
+            let height = loadedImage.height;
 
-            const scale = Math.min(MAX_SIZE / w, MAX_SIZE / h);
+            // uniform scale
+            const scale = Math.min(MAX_SIZE / width, MAX_SIZE / height);
 
-            w = Math.round(w * scale);
-            h = Math.round(h * scale);
+            width = Math.max(1, Math.round(width * scale));
+            height = Math.max(1, Math.round(height * scale));
 
-            preview.width = w;
-            preview.height = h;
+            preview.width = width;
+            preview.height = height;
 
-            ctx.clearRect(0, 0, w, h);
-            ctx.drawImage(loadedImage, 0, 0, w, h);
+            ctx.clearRect(0, 0, width, height);
+            ctx.drawImage(loadedImage, 0, 0, width, height);
         };
 
         loadedImage.src = event.target.result;
@@ -66,46 +58,37 @@ function generateImage()
         return;
     }
 
-    let w = preview.width;
-    let h = preview.height;
+    const width = preview.width;
+    const height = preview.height;
 
-    const pixels = ctx.getImageData(0, 0, w, h).data;
+    const pixels = ctx.getImageData(0, 0, width, height).data;
 
     const result = [];
 
-    for (let y = 0; y < h; y++)
-    {
-        for (let x = 0; x < w; x++)
-        {
-            const i = (y * w + x) * 4;
+    // 🔥 CENTER OFFSETS (THIS IS THE KEY FIX)
+    const offsetX = Math.floor(width / 2);
+    const offsetZ = Math.floor(height / 2);
 
-            const r = pixels[i];
-            const g = pixels[i + 1];
-            const b = pixels[i + 2];
-            const a = pixels[i + 3];
+    for (let y = 0; y < height; y++)
+    {
+        for (let x = 0; x < width; x++)
+        {
+            const index = (y * width + x) * 4;
+
+            const r = pixels[index];
+            const g = pixels[index + 1];
+            const b = pixels[index + 2];
+            const a = pixels[index + 3];
 
             if (a < 10) continue;
 
-            // ===== BASE COORDS =====
-            let cx = x;
-            let cz = y;
-
-            // Flip controls (fixes mirroring)
-            if (FLIP_X) cx = (w - 1) - cx;
-            if (FLIP_Y) cz = (h - 1) - cz;
-
-            // Axis swap (fix 90° rotation cases)
-            if (SWAP_AXES)
-            {
-                const t = cx;
-                cx = cz;
-                cz = t;
-            }
-
-            const cy = HEIGHT_OFFSET;
+            // ✅ CORRECT CM2 WORLD MAPPING
+            const cm2X = x - offsetX;
+            const cm2Y = 1;
+            const cm2Z = y - offsetZ;
 
             result.push(
-                `14,0,${cy},${cx},${cz},${r}+${g}+${b}+1+0`
+                `14,0,${cm2Y},${cm2X},${cm2Z},${r}+${g}+${b}+1+0`
             );
         }
     }
@@ -125,6 +108,7 @@ function generateImage()
         return;
     }
 
+    // keep CM2 format marker
     result[result.length - 1] += "???";
 
     copy(result.join(";"));
