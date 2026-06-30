@@ -14,7 +14,7 @@ let loadedImage = null;
 
 const FLIP_X = false;
 const FLIP_Y = true;   // fixes most upside-down issues
-const SWAP_AXES = false; // only true if image is rotated 90°
+const SWAP_AXES = true; // only true if image is rotated 90°
 const HEIGHT_OFFSET = 1;
 
 function copy(text)
