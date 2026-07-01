@@ -141,8 +141,8 @@ function generateImage()
             if (a < 10)
                 continue;
 
-const cm2X = -y;
-const cm2Y = width - 1 - x;
+const cm2X = y;
+const cm2Y = -x;
 const cm2Z = 0;
 
 result.push(
