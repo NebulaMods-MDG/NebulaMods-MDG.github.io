@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gorilla Tag Mod Menu</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #10131a;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Top Bar */
+        .update-bar {
+            width: 100%;
+            background: #1d2533;
+            padding: 12px;
+            text-align: center;
+            font-size: 15px;
+            border-bottom: 2px solid #2f3d52;
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: absolute;
+            top: 70px;
+            left: 20px;
+            background: #2b7cff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .back-btn:hover {
+            background: #5297ff;
+            transform: scale(1.05);
+        }
+
+        /* Main Content */
+        .container {
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 56px;
+            margin-bottom: 40px;
+            text-shadow: 0 0 12px rgba(0,150,255,0.5);
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .tool-btn {
+            background: #2b7cff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 16px 50px;
+            font-size: 22px;
+            cursor: pointer;
+            transition: 0.25s;
+            width: 260px;
+        }
+
+        .tool-btn:hover {
+            background: #5297ff;
+            transform: scale(1.05);
+        }
+
+        .tool-btn:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="update-bar">
+        Last Updated: June 26, 2026
+    </div>
+
+    <!-- BACK BUTTON -->
+    <button class="back-btn" onclick="window.location.href='index.html'">
+        ← Back
+    </button>
+
+    <div class="container">
+        <h1>Download Menu</h1>
+
+        <div class="button-container">
+            <button class="tool-btn" onclick="window.open('https://cdn.discordapp.com/attachments/1482134288618098718/1511162966257569792/Nebula_Client_-_tg_nosyarg.dll?ex=6a4657ef&is=6a45066f&hm=48c1e9ff162f3763e16f1b3f6e2de007b329fcf0a495a382177a208c783e6bc9&', '_blank')">
+    Download Menu
+</button>
+    </div>
+
+</body>
+</html>
