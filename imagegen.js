@@ -144,7 +144,7 @@ const cm2X = 0;
 const cm2Z = x;
 
 result.push(
-    `14,0,${cm2X},${cm2Y},${cm2Z},${r}+${g}+${b}+1+0`
+    `14,0,${cm2X},${cm2Y},${cm2Z},${r}+${g}+${b}+2+0`
 );
         }
     }
