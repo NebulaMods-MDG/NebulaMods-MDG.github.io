@@ -1,5 +1,4 @@
 const imageInput = document.getElementById("imageInput");
-
 const preview = document.getElementById("preview");
 const ctx = preview.getContext("2d");
 
