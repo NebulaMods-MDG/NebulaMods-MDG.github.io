@@ -139,7 +139,7 @@ function generateImage()
 
             if (a < 10)
                 continue;
-const cm2Y = -y;
+const cm2Y = height - 1 - y;
 const cm2X = 0;
 const cm2Z = x;
 
