@@ -139,9 +139,9 @@ function generateImage()
 
             if (a < 10)
                 continue;
-const cm2X = height - 1 - y;
-const cm2Y = 0;
-const cm2Z = x;
+const cm2X = y
+const cm2Y = x;
+const cm2Z = 0;
 
 result.push(
     `14,0,${cm2X},${cm2Y},${cm2Z},${r}+${g}+${b}+1+0`
