@@ -1,5 +1,5 @@
 function text(value, aligned=true, autoN=0) {
-    const move = aligned ? 1 : 1;
+    const move = aligned ? 1 : 0.45;
 
     let row = 0;
     let col = 0;
