@@ -1,93 +1,63 @@
-const MAX_BLOCKS = 150000;
-
 function copy(text)
 {
     navigator.clipboard.writeText(text)
-        .then(() =>
-        {
-            alert("Copied CM2 String!");
-        })
-        .catch(() =>
-        {
-            alert("Failed to copy.");
-        });
+        .then(() => alert("Copied CM2 String!"))
+        .catch(() => alert("Failed to copy!"));
 }
 
 function generateCircle()
 {
     const radius =
-        parseFloat(
-            document.getElementById(
-                "radius"
-            ).value
-        );
+        parseFloat(document.getElementById("radius").value) || 10;
 
-    const block =
-        parseInt(
-            document.getElementById(
-                "block"
-            ).value
-        );
+    const thickness =
+        parseFloat(document.getElementById("thickness").value) || 0.5;
 
-    const density =
-        parseInt(
-            document.getElementById(
-                "density"
-            ).value
-        );
+    const STEP = 0.12;     // smaller = smoother circle
+    const LAYERS = 4;      // more layers = thicker circle wall
+    const SNAP = 0.01;     // precision
 
-    if(isNaN(radius))
-        return;
+    const blocks = [];
+    const used = new Set();
 
-    const result = [];
-
-    const count =
-        Math.max(
-            8,
-            density
-        );
-
-    for(
-        let i = 0;
-        i < count;
-        i++
-    )
+    for (let layer = 0; layer < LAYERS; layer++)
     {
-        const angle =
-            i /
-            count *
-            Math.PI *
-            2;
+        const layerOffset =
+            (layer - LAYERS / 2) * (thickness / LAYERS);
 
-        const x =
-            Math.cos(angle)
-            *
-            radius;
+        const r = radius + layerOffset;
 
-        const z =
-            Math.sin(angle)
-            *
-            radius;
+        for (let angle = 0; angle < 360; angle += STEP)
+        {
+            const rad = angle * Math.PI / 180;
 
-        result.push(
+            let x = Math.cos(rad) * r;
+            let z = Math.sin(rad) * r;
 
-`${block},0,${x.toFixed(3)},0,${z.toFixed(3)},`
+            // snap so CM2 doesn't explode block count
+            x = Math.round(x / SNAP) * SNAP;
+            z = Math.round(z / SNAP) * SNAP;
 
-        );
+            const key = `${x},${z},${layer}`;
+
+            if (used.has(key))
+                continue;
+
+            used.add(key);
+
+            // CM2 format: 14 = tile
+            blocks.push(`14,0,0,${x},${z},`);
+        }
     }
 
-    result[result.length-1] +=
-        "???";
+    if (blocks.length === 0)
+    {
+        alert("No blocks generated.");
+        return;
+    }
 
-    navigator.clipboard.writeText(
+    // mark last block
+    blocks[blocks.length - 1] += "???";
 
-        result.join(";")
-
-    );
-
-    alert(
-
-`Copied ${count} blocks`
-
-    );
+    copy(blocks.join(";"));
 }
