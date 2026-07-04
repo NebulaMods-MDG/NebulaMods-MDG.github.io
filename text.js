@@ -6,7 +6,7 @@ function text(value, aligned=true, autoN=0) {
 
     for (let i = 0; i < value.length; i++) {
         const char = value[i];
-        
+    
         switch (char) {
             case "\n":
                 row++;
