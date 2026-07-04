@@ -29,111 +29,67 @@ function generateCircle()
             ).value
         );
 
-    if(
-        isNaN(radius)
-        || radius < 1
-    )
+    if(isNaN(radius) || radius < 1)
     {
-        alert(
-            "Invalid radius."
-        );
-
+        alert("Invalid radius.");
         return;
     }
 
     const points = [];
     const used = new Set();
 
-    function add(x,z)
+    const count =
+        Math.max(
+            8,
+            Math.round(
+                radius * 4
+            )
+        );
+
+    for(let i = 0; i < count; i++)
     {
+        const angle =
+            (i / count) *
+            Math.PI *
+            2;
+
+        const x =
+            Math.round(
+                Math.cos(angle)
+                * radius
+            );
+
+        const z =
+            Math.round(
+                Math.sin(angle)
+                * radius
+            );
+
         const key =
             `${x},${z}`;
 
-        if(
-            used.has(key)
-        )
-            return;
+        if(used.has(key))
+            continue;
 
         used.add(key);
 
         points.push({
             x,
             z,
-            angle:
-                Math.atan2(
-                    z,
-                    x
-                )
+            angle
         });
     }
 
-    let x = radius;
-    let z = 0;
-
-    let d =
-        1 - radius;
-
-    while(
-        x >= z
-    )
-    {
-        add( x,  z);
-        add( z,  x);
-
-        add(-z,  x);
-        add(-x,  z);
-
-        add(-x, -z);
-        add(-z, -x);
-
-        add( z, -x);
-        add( x, -z);
-
-        z++;
-
-        if(d < 0)
-        {
-            d +=
-                2*z + 1;
-        }
-        else
-        {
-            x--;
-
-            d +=
-                2*(z-x)+1;
-        }
-    }
-
     points.sort(
-
         (a,b)=>
-
-        a.angle-b.angle
-
+        a.angle - b.angle
     );
 
-    if(
-        points.length >
-        MAX_BLOCKS
-    )
+    let save = [];
+
+    for(const p of points)
     {
-        alert(
-            "Too many blocks."
-        );
-
-        return;
-    }
-
-    const blocks =
-        [];
-
-    for(
-        const p
-        of points
-    )
-    {
-        blocks.push(
+        save.push(
 
 `${block},0,${-p.x},0,${p.z},`
 
@@ -141,34 +97,25 @@ function generateCircle()
     }
 
     let result =
-        blocks.join(";");
+        save.join(";");
 
     result += "?";
 
-    const connections =
-        [];
+    const connections = [];
 
-    for(
-        let i = 1;
-        i <= points.length;
-        i++
-    )
+    for(let i = 1; i <= points.length; i++)
     {
         let next =
             i + 1;
 
-        if(
-            next >
-            points.length
-        )
+        if(next >
+            points.length)
         {
             next = 1;
         }
 
         connections.push(
-
-`${i},${next}`
-
+            `${i},${next}`
         );
     }
 
@@ -177,7 +124,11 @@ function generateCircle()
 
     result += "???";
 
-    copy(
+    navigator.clipboard.writeText(
         result
+    );
+
+    alert(
+        `Copied ${points.length} blocks`
     );
 }
