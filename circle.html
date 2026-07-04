@@ -17,13 +17,18 @@ CM2 Circle Generator
 <style>
 
 *{
+
 margin:0;
 padding:0;
+
 box-sizing:border-box;
+
 font-family:
+
 Arial,
 Helvetica,
 sans-serif;
+
 }
 
 body{
@@ -55,6 +60,7 @@ text-align:center;
 font-size:15px;
 
 border-bottom:
+
 2px solid #2f3d52;
 
 }
@@ -174,14 +180,6 @@ transform:scale(.98);
 
 }
 
-.info{
-
-margin-top:20px;
-
-opacity:.7;
-
-}
-
 </style>
 
 </head>
@@ -213,26 +211,25 @@ CM2 Circle Generator
 <input
 id="radius"
 type="number"
-placeholder="Radius"
-value="10">
+value="10"
+min="1"
+max="100"
+placeholder="Radius">
 
 <input
 id="block"
 type="number"
-placeholder="Block ID"
-value="6">
+value="6"
+min="1"
+max="19"
+placeholder="Block ID">
 
-<button onclick="generateCircle()">
+<button
+onclick="generateCircle()">
 
 Copy CM2 String
 
 </button>
-
-<div class="info">
-
-Generates an outline circle
-
-</div>
 
 </div>
 
