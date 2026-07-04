@@ -30,48 +30,32 @@ function generateCircle()
         );
 
     if (
-        isNaN(radius) ||
-        radius < 1
+        isNaN(radius)
+        || radius < 1
     )
     {
         alert(
-            "Radius must be greater than 0."
+            "Invalid radius."
         );
 
         return;
     }
 
-    if (
-        isNaN(block) ||
-        block < 1 ||
-        block > 19
-    )
-    {
-        alert(
-            "Block ID must be 1-19."
-        );
-
-        return;
-    }
-
-    const points =
-        new Set();
-
-    const result =
-        [];
+    const blocks = [];
+    const used = new Set();
 
     for (
-        let angle = 0;
-        angle < 360;
-        angle++
+        let a = 0;
+        a < 360;
+        a++
     )
     {
         const rad =
-            angle *
+            a *
             Math.PI /
             180;
 
-        const y =
+        const x =
             Math.round(
                 Math.cos(rad)
                 * radius
@@ -84,36 +68,23 @@ function generateCircle()
             );
 
         const key =
-            `${y},${z}`;
+            `${x},${z}`;
 
         if (
-            points.has(key)
+            used.has(key)
         )
             continue;
 
-        points.add(key);
+        used.add(key);
 
-        result.push(
-
-`${block},0,${y},0,${z},`
-
-        );
-
+        blocks.push({
+            x,
+            z
+        });
     }
 
     if (
-        result.length === 0
-    )
-    {
-        alert(
-            "Nothing generated."
-        );
-
-        return;
-    }
-
-    if (
-        result.length >
+        blocks.length >
         MAX_BLOCKS
     )
     {
@@ -124,12 +95,56 @@ function generateCircle()
         return;
     }
 
-    result[
-        result.length - 1
-    ] += "???";
+    let save = [];
 
-    copy(
-        result.join(";")
-    );
+    for (
+        const b
+        of blocks
+    )
+    {
+        save.push(
 
+`${block},0,${-b.x},0,${b.z},`
+
+        );
+    }
+
+    let result =
+        save.join(";");
+
+    result += "?";
+
+    const connections =
+        [];
+
+    for (
+        let i = 1;
+        i <= blocks.length;
+        i++
+    )
+    {
+        let next =
+            i + 1;
+
+        if (
+            next >
+            blocks.length
+        )
+        {
+            next = 1;
+        }
+
+        connections.push(
+
+`${i},${next}`
+
+        );
+    }
+
+    result +=
+        connections.join(";");
+
+    result += "???";
+
+    copy(result);
 }
