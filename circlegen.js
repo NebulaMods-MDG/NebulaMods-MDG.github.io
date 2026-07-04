@@ -13,7 +13,7 @@ function generateCircle()
     const thickness =
         parseFloat(document.getElementById("thickness").value) || 0.5;
 
-    const STEP = 0.000001;
+    const STEP = 0.12;
     const LAYERS = 4;
     const SNAP = 0.01;
 
