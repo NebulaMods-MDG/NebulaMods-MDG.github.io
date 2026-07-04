@@ -13,9 +13,9 @@ function generateCircle()
     const thickness =
         parseFloat(document.getElementById("thickness").value) || 0.5;
 
-    const STEP = 0.12;     // smaller = smoother circle
-    const LAYERS = 4;      // more layers = thicker circle wall
-    const SNAP = 0.01;     // precision
+    const STEP = 0.12;
+    const LAYERS = 4;
+    const SNAP = 0.01;
 
     const blocks = [];
     const used = new Set();
@@ -33,8 +33,6 @@ function generateCircle()
 
             let x = Math.cos(rad) * r;
             let z = Math.sin(rad) * r;
-
-            // snap so CM2 doesn't explode block count
             x = Math.round(x / SNAP) * SNAP;
             z = Math.round(z / SNAP) * SNAP;
 
@@ -44,9 +42,7 @@ function generateCircle()
                 continue;
 
             used.add(key);
-
-            // CM2 format: 14 = tile
-            blocks.push(`14,0,0,${x},${z},`);
+            blocks.push(`14,0,${x},0,${z},`);
         }
     }
 
@@ -55,8 +51,6 @@ function generateCircle()
         alert("No blocks generated.");
         return;
     }
-
-    // mark last block
     blocks[blocks.length - 1] += "???";
 
     copy(blocks.join(";"));
