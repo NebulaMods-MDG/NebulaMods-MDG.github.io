@@ -3,14 +3,10 @@ const MAX_BLOCKS = 150000;
 function copy(text)
 {
     navigator.clipboard.writeText(text)
-    .then(() =>
-    {
-        alert("Copied CM2 String!");
-    })
-    .catch(() =>
-    {
-        alert("Failed to copy.");
-    });
+        .then(() =>
+        {
+            alert("Copied CM2 String!");
+        });
 }
 
 function generateCircle()
@@ -22,6 +18,13 @@ function generateCircle()
             ).value
         );
 
+    const thickness =
+        parseInt(
+            document.getElementById(
+                "thickness"
+            ).value
+        );
+
     const block =
         parseInt(
             document.getElementById(
@@ -29,62 +32,74 @@ function generateCircle()
             ).value
         );
 
-    if (
-        isNaN(radius)
-        || radius < 1
-    )
-    {
-        alert(
-            "Invalid radius."
-        );
-
+    if(isNaN(radius))
         return;
-    }
 
-    const blocks = [];
-    const used = new Set();
+    const points = [];
 
-    for (
-        let a = 0;
-        a < 360;
-        a++
+    const used =
+        new Set();
+
+    for(
+        let x = -radius;
+        x <= radius;
+        x++
     )
     {
-        const rad =
-            a *
-            Math.PI /
-            180;
-
-        const x =
-            Math.round(
-                Math.cos(rad)
-                * radius
-            );
-
-        const z =
-            Math.round(
-                Math.sin(rad)
-                * radius
-            );
-
-        const key =
-            `${x},${z}`;
-
-        if (
-            used.has(key)
+        for(
+            let z = -radius;
+            z <= radius;
+            z++
         )
-            continue;
+        {
+            const d =
+                Math.sqrt(
+                    x*x +
+                    z*z
+                );
 
-        used.add(key);
+            if(
+                d <= radius &&
+                d >= radius-thickness
+            )
+            {
+                const key =
+                    `${x},${z}`;
 
-        blocks.push({
-            x,
-            z
-        });
+                if(
+                    used.has(key)
+                )
+                    continue;
+
+                used.add(key);
+
+                points.push({
+
+                    x,
+                    z,
+
+                    angle:
+
+                    Math.atan2(
+                        z,
+                        x
+                    )
+
+                });
+            }
+        }
     }
 
-    if (
-        blocks.length >
+    points.sort(
+
+        (a,b)=>
+
+        a.angle-b.angle
+
+    );
+
+    if(
+        points.length >
         MAX_BLOCKS
     )
     {
@@ -95,16 +110,16 @@ function generateCircle()
         return;
     }
 
-    let save = [];
+    let save=[];
 
-    for (
-        const b
-        of blocks
+    for(
+        const p
+        of points
     )
     {
         save.push(
 
-`${block},0,${-b.x},0,${b.z},`
+`${block},0,${-p.x},0,${p.z},`
 
         );
     }
@@ -114,21 +129,20 @@ function generateCircle()
 
     result += "?";
 
-    const connections =
-        [];
+    let connections=[];
 
-    for (
-        let i = 1;
-        i <= blocks.length;
+    for(
+        let i=1;
+        i<=points.length;
         i++
     )
     {
         let next =
-            i + 1;
+            i+1;
 
-        if (
+        if(
             next >
-            blocks.length
+            points.length
         )
         {
             next = 1;
@@ -142,6 +156,7 @@ function generateCircle()
     }
 
     result +=
+
         connections.join(";");
 
     result += "???";
