@@ -6,6 +6,10 @@ function copy(text)
         .then(() =>
         {
             alert("Copied CM2 String!");
+        })
+        .catch(() =>
+        {
+            alert("Failed to copy.");
         });
 }
 
@@ -18,13 +22,6 @@ function generateCircle()
             ).value
         );
 
-    const thickness =
-        parseInt(
-            document.getElementById(
-                "thickness"
-            ).value
-        );
-
     const block =
         parseInt(
             document.getElementById(
@@ -32,61 +29,79 @@ function generateCircle()
             ).value
         );
 
-    if(isNaN(radius))
-        return;
-
-    const points = [];
-
-    const used =
-        new Set();
-
-    for(
-        let x = -radius;
-        x <= radius;
-        x++
+    if(
+        isNaN(radius)
+        || radius < 1
     )
     {
-        for(
-            let z = -radius;
-            z <= radius;
-            z++
+        alert(
+            "Invalid radius."
+        );
+
+        return;
+    }
+
+    const points = [];
+    const used = new Set();
+
+    function add(x,z)
+    {
+        const key =
+            `${x},${z}`;
+
+        if(
+            used.has(key)
         )
-        {
-            const d =
-                Math.sqrt(
-                    x*x +
-                    z*z
-                );
+            return;
 
-            if(
-                d <= radius &&
-                d >= radius-thickness
-            )
-            {
-                const key =
-                    `${x},${z}`;
+        used.add(key);
 
-                if(
-                    used.has(key)
-                )
-                    continue;
-
-                used.add(key);
-
-                points.push({
-
-                    x,
+        points.push({
+            x,
+            z,
+            angle:
+                Math.atan2(
                     z,
+                    x
+                )
+        });
+    }
 
-                    angle:
+    let x = radius;
+    let z = 0;
 
-                    Math.atan2(
-                        z,
-                        x
-                    )
+    let d =
+        1 - radius;
 
-                });
-            }
+    while(
+        x >= z
+    )
+    {
+        add( x,  z);
+        add( z,  x);
+
+        add(-z,  x);
+        add(-x,  z);
+
+        add(-x, -z);
+        add(-z, -x);
+
+        add( z, -x);
+        add( x, -z);
+
+        z++;
+
+        if(d < 0)
+        {
+            d +=
+                2*z + 1;
+        }
+        else
+        {
+            x--;
+
+            d +=
+                2*(z-x)+1;
         }
     }
 
@@ -110,14 +125,15 @@ function generateCircle()
         return;
     }
 
-    let save=[];
+    const blocks =
+        [];
 
     for(
         const p
         of points
     )
     {
-        save.push(
+        blocks.push(
 
 `${block},0,${-p.x},0,${p.z},`
 
@@ -125,20 +141,21 @@ function generateCircle()
     }
 
     let result =
-        save.join(";");
+        blocks.join(";");
 
     result += "?";
 
-    let connections=[];
+    const connections =
+        [];
 
     for(
-        let i=1;
-        i<=points.length;
+        let i = 1;
+        i <= points.length;
         i++
     )
     {
         let next =
-            i+1;
+            i + 1;
 
         if(
             next >
@@ -156,10 +173,11 @@ function generateCircle()
     }
 
     result +=
-
         connections.join(";");
 
     result += "???";
 
-    copy(result);
+    copy(
+        result
+    );
 }
